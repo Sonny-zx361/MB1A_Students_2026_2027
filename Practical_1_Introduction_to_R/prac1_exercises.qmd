@@ -2,6 +2,9 @@
 title: "Part 3: Functions and Variables"
 author: "Sonny Xu"
 ---
+library(tidyverse)
+library(gt)
+
 Exercise - Using functions
 ```{r}
 round(3.14159)
@@ -23,14 +26,14 @@ print(paste(class(x), class(y), class(z)))
 ```
 Exercise - Using variables of different types
 ```{r}
-cell_ID_1 <- "CX1"
-cell_ID_2 <- "CX2"
+cell_id_1 <- "CX1"
+cell_id_2 <- "CX2"
 
 treated_1 <- TRUE
 treated_2 <- FALSE
 
 before_1 <- 5415
-before_1 <- 8123
+before_2 <- 8123
 
 after_1 <- 1432
 after_2 <- 7543
@@ -52,5 +55,30 @@ print(is.nan(x))
 
 print(round(2.5))
 print(round(3.5))
+```
+
+Exercise - Vectors
+```{r}
+cell_id <- c(cell_id_1, cell_id_2)
+treated <- c(treated_1, treated_2)
+before <- c(before_1, before_2)
+after <- c(after_1, after_2)
+```
+Exercise - Indexing
+```{r}
+all_my_pets <- c("dog", "horse", "guinea pig", "chicken", "cat")
+fourth <- (all_my_pets[4])
+print(fourth)
+```
+Exercise - Creating a data frame
+```{r}
+my_data_frame <- tibble(
+  cell_ID = cell_id,
+  treated = treated,
+  num_cells_before = before,
+  num_cells_after = after
+)
+
+gt(my_data_frame)
 ```
 

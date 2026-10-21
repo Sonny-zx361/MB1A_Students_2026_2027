@@ -1,0 +1,25 @@
+---
+title: "ukhsa_data_analysis.qmd"
+author: "Sonny Xu"
+---
+library(tidyverse)
+library(gt)
+
+I selected the antibiotic dataset.
+```{r}
+antibiotic <- read_csv("data/ukhsa-chart-download.csv")
+
+gt(head(antibiotic))
+```
+```{r}
+ggplot(antibiotic)
+
+ggplot(antibiotic, aes(
+  x = date,
+  y = metric_value
+)) +
+  geom_line(colour = "red") +
+  xlab("Date") +
+  ylab("DID") +
+  ggtitle("Defined daily doses per 1,000 inhabitants per day (DID)")
+```
