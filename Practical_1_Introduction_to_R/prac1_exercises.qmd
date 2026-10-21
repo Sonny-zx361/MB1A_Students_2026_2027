@@ -1,0 +1,56 @@
+---
+title: "Part 3: Functions and Variables"
+author: "Sonny Xu"
+---
+Exercise - Using functions
+```{r}
+round(3.14159)
+```
+Exercise - Argument order
+```{r}
+print(rep(5, 7))
+
+print(rep(x = 5, times = 7))
+```
+Exercise - Character, numerical and logical variables
+```{r}
+x <- "word"
+y <- 361
+z <- TRUE
+
+print(paste(x, y, z))
+print(paste(class(x), class(y), class(z)))
+```
+Exercise - Using variables of different types
+```{r}
+cell_ID_1 <- "CX1"
+cell_ID_2 <- "CX2"
+
+treated_1 <- TRUE
+treated_2 <- FALSE
+
+before_1 <- 5415
+before_1 <- 8123
+
+after_1 <- 1432
+after_2 <- 7543
+```
+
+```{r}
+print(TRUE + TRUE)
+print(TRUE + FALSE)
+print(5 + TRUE)
+
+x <- NA
+print(x == NA)
+print(is.na(x))
+
+x <- 0 / 0
+print(x)
+print(is.na(x))
+print(is.nan(x))
+
+print(round(2.5))
+print(round(3.5))
+```
+
