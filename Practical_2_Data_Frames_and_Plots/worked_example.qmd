@@ -1,0 +1,55 @@
+---
+title: "worked_example"
+author: "Sonny Xu"
+---
+```{r}
+library(gt)
+library(tidyverse)
+library(maps)
+
+bird_breeding_sites <- read_csv("data/breeding_site_locations.csv")
+gt(bird_breeding_sites)
+```
+```{r}
+colnames(bird_breeding_sites)
+
+glimpse(bird_breeding_sites)
+
+print(nrow(bird_breeding_sites))
+print(ncol(bird_breeding_sites))
+print(dim(bird_breeding_sites))
+```
+```{r}
+bird_migration_sites <- read_csv("data/migratory_connectivity_dataset.csv")
+gt(head(bird_migration_sites))
+```
+```{r}
+print(dim(bird_migration_sites))
+
+glimpse(bird_migration_sites)
+
+colnames(bird_migration_sites)
+```
+```{r}
+bird_breeding_selected <- bird_breeding_sites |>
+  select(Site, Longitude, Latitude)
+
+gt(bird_breeding_selected)
+```
+```{r}
+bird_migration_selected <- bird_migration_sites |>
+  select(Site, winterLongitude, winterLatitude, pslon, pslat, iblon, iblat, awestlon, awestlat) |>
+  distinct() |>
+  rename(Winter_Longitude = winterLongitude , Winter_Latitude = winterLatitude, Stopover_Longitude=pslon, Stopover_Latitude=pslat, Iberian_Longitude=iblon, Iberian_Latitude=iblat, Westmost_Longitude=awestlon, Westmost_Latitude=awestlat)
+
+gt(head(bird_migration_selected))
+```
+```{r}
+bird_breeding_exc <- bird_breeding_selected |>
+  filter(Site != "Spain")
+gt(bird_breeding_exc)
+
+bird_migration_exc <- bird_migration_selected |>
+  filter(Site != "Spain")
+gt(head(bird_migration_exc))
+```

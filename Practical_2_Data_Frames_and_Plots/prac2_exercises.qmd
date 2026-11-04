@@ -1,0 +1,15 @@
+---
+title: "prac2_exercises"
+author: "Sonny Xu"
+---
+```{r}
+input_vec <- c(5, -10, 4, -3)
+input_vec|>mean()|>abs()|>round()
+```
+```{r}
+y<-12
+y==7
+y<15
+y>20
+y<=12
+```
