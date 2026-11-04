@@ -37,6 +37,13 @@ bird_breeding_selected <- bird_breeding_sites |>
 gt(bird_breeding_selected)
 ```
 ```{r}
+bird_breeding_selected <- bird_breeding_sites |>
+  select(Site, Longitude, Latitude) |>
+  distinct() |>
+  rename(Breeding_Longitude = Longitude, Breeding_Latitude = Latitude)
+
+gt(bird_breeding_selected)
+
 bird_migration_selected <- bird_migration_sites |>
   select(Site, winterLongitude, winterLatitude, pslon, pslat, iblon, iblat, awestlon, awestlat) |>
   distinct() |>
@@ -125,6 +132,7 @@ combined_bird_wide <- combined_bird_piv |>
 
 gt(combined_bird_wide)
 ```
+
 ```{r}
 spring_vals <- c("Breeding", "Stopover", "Winter")
 autumn_vals <- c("Breeding", "Iberian", "Westmost", "Winter")
