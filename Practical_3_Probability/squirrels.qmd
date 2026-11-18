@@ -1,0 +1,194 @@
+---
+title: "squirrels"
+---
+```{r}
+library(tidyverse)
+library(gt)
+library(cowsay)
+set.seed(42)
+
+trial <- sample(c("success", "fail"),
+  size = 150,
+  replace = TRUE,
+  prob = c(0.3, 0.7)
+)
+n_successes<-sum(trial=="success")
+
+say(paste("i was successful", n_successes, "times!"), by="squirrel")
+```
+```{r}
+combined_successes <- c()
+for (i in seq_len(1000)) {
+  is_success <- sample(c("SUCCESS", "FAILURE"),
+    size = 150,
+    replace = TRUE,
+    prob = c(0.3, 0.7)
+  )
+  n_successes <- sum(is_success == "SUCCESS")
+  combined_successes <- c(combined_successes, n_successes)
+}
+print(combined_successes)
+
+df_squirrels <- tibble("N_Successful_Heists" = combined_successes)
+gt(head(df_squirrels))
+```
+```{r}
+ggplot(
+  df_squirrels,
+  aes(x = N_Successful_Heists)
+) +
+  geom_bar()
+  ggtitle("squirrel stimulation")
+  xlab("n")
+  ylab("N_Successful_Heists")
+```
+```{r}
+n <- 150
+k <- 48
+p <- 0.3
+
+prob_X_equals_k <- dbinom(k, n, p)
+print(prob_X_equals_k)
+
+n_successes <- pull(df_squirrels, N_Successful_Heists)
+n_48 <- sum(n_successes == 48)
+print(n_48)
+
+print(n_48 / 1000)
+```
+```{r}
+n <- 150
+p <- 0.3
+probs <- c()
+for (k in seq(0, n, 1)) {
+  prob_X_equals_k <- dbinom(k, n, p)
+  probs <- c(probs, prob_X_equals_k)
+}
+probs
+
+df_probs <- tibble(
+  N_Successful_Heists = seq(0, n, 1),
+  Probability = probs
+)
+
+ggplot(
+  df_probs,
+  aes(
+    x = N_Successful_Heists,
+    y = Probability
+  )
+) +
+  geom_col() +
+  ggtitle("Binomial Distribution of Successful Heists - Theoretical") +
+  xlab("Number of successful heists") +
+  ylab("Probability") +
+  theme_minimal()
+```
+```{r}
+count_squirrels <- rbinom(n = 1000, size = 150, prob = 0.3)
+print(count_squirrels)
+
+rb_df <- tibble(N_Successful_Heists = count_squirrels)
+
+ggplot(rb_df,
+       aes(x = N_Successful_Heists)) +
+  geom_bar() +
+  ggtitle("Number of Successful Heists per Squirrel - Simulated") +
+  xlab("Number of successful heists") +
+  ylab("Number of squirrels") +
+  theme_minimal()
+```
+```{r}
+prob_up_to_48 <- pbinom(48, 150, 0.3)
+print(prob_up_to_48)
+
+print(sum(count_squirrels <= 48) / length(count_squirrels))
+```
+```{r}
+n_sims <- 1000
+n_flowers_per_sim <- 200
+
+# Simulate 1000 datasets of 200 flowers with
+# a 60% chance of being pollinated
+flowers <- rbinom(
+  n = n_sims,
+  size = n_flowers_per_sim,
+  prob = 0.6
+)
+
+# How many times were at least 125 flowers
+# pollinated?
+times_successful <- sum(flowers >= 125)
+
+# What proportion of the attempts is this?
+prop_successful <- times_successful / n_sims
+print(prop_successful)
+```
+```{r}
+# Probability that less than 125 flowers are
+# pollinated
+prob_under_125 <- pbinom(124, 200, 0.6)
+
+# Probability that at least 125 flowers are
+# pollinated
+prob_125_or_over <- 1 - prob_under_125
+
+print(prob_125_or_over)
+```
+```{r}
+n_sims <- 1000
+props <- c()
+# We know it's more than 200 - let's try to up to 250
+# Run the simulation for each of these numbers of
+# flowers
+for (i in seq(200, 250, 1)) {
+  flowers <- rbinom(
+    n = n_sims,
+    size = i,
+    prob = 0.6
+  )
+  # Calculate the number and proportion of times
+  # she was successful
+  # Store only this value, not the whole vector
+  times_successful <- sum(flowers >= 125)
+  prop_successful <- times_successful / n_sims
+  props <- c(props, prop_successful)
+}
+
+# Convert these into a data frame
+prop_df <- tibble(
+  npicked = seq(200, 250, 1),
+  psuccess = props
+)
+
+# Find the rows where she succeeded at least
+# 95% of the time
+prop_df_filt <- prop_df |>
+  filter(psuccess >= 0.95)
+
+gt(prop_df_filt)
+```
+```{r}
+probs <- c()
+# We know it's more than 200 - let's try to up to 250
+# Determine the probability for each of these numbers
+# of flowers
+for (i in seq(200, 250, 1)) {
+  prob_under_125 <- pbinom(124, i, 0.6)
+  prob_125_or_over <- 1 - prob_under_125
+  probs <- c(probs, prob_125_or_over)
+}
+
+# Convert these into a data frame
+prob_df <- tibble(
+  npicked = seq(200, 250, 1),
+  psuccess = probs
+)
+
+# Find the rows where she succeeded at least
+# 95% of the time
+prob_df_filt <- prob_df |>
+  filter(psuccess >= 0.95)
+
+gt(prob_df_filt)
+```
